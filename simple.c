@@ -21,22 +21,12 @@ int simple_init(void)
 	//declare a task struct to represent the identity of each task
 	struct task_struct *task;
 
+	printk(KERN_INFO "NAME | STATE | PID | PPID ");
 	//use the for_each_process macro to traverse through tasks
 	for_each_process(task)
 	{
 		//print the current task information
-		printk(KERN_INFO "name: %s, state: %ld,  pid: [%d]\n", task->comm, task->state, task->pid);
-
-		//print parent processes information
-		//if the parent process is the init_task, then don't print as a parent since all processes have it as their parent. the init_task has a pid = 0
-		if(task->parent != &init_task)
-			printk(KERN_INFO "parent name: %s, parent state: %ld, parent pid: [%d]\n", task->parent->comm, task->parent->state, task->parent->pid);
-		if(task->parent->parent != &init_task)
-			printk(KERN_INFO "grandparent name: %s, grandparent state: %ld, grandparent pid: [%d] \n",task->parent->parent->comm, task->parent->parent->state,task->parent->parent->pid);
-		if(task->parent->parent->parent != &init_task)
-			printk(KERN_INFO "great grandparent name: %s, great grandparent state: %ld, great grandparent pid: [%d] \n", task->parent->parent->parent->comm, task->parent->parent->parent->state,task->parent->parent->parent->pid);
-		if(task->parent->parent->parent->parent != &init_task)
-			printk(KERN_INFO "great great grandparent name: %s, great great grandparent state: %ld, great great grandparent pid: [%d] \n", task->parent->parent->parent->parent->comm, task->parent->parent->parent->parent->state,task->parent->parent->parent->parent->pid);
+		printk(KERN_INFO " %s | %d | %d | %ld | %d \n", task->comm,task->state,task->pid, task->parent->pid);
 
 
 		printk("\n");
